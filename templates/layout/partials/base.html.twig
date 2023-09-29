@@ -1,0 +1,52 @@
+{# base.html.twig #}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}JobEntry - Job Portal Website Template{% endblock %}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    {% block stylesheets %}
+        {# Inclure les blocs de styles ici s'ils sont spécifiques à cette page #}
+        <link href="{{ asset('assets/img/favicon.ico') }}" rel="icon">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+        <link href="{{ asset('assets/css/all.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/font/bootstrap-icons.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/lib/animate/animate.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+        {{ parent() }}
+    {% endblock %}
+</head>
+<body> 
+   <header>
+        {% include 'header.twig' %}
+   </header>
+
+   <main>
+        {% block content %}{% endblock %}
+   </main>
+
+   <footer>
+        {% include 'footer.twig' %}
+   </footer>
+
+   {% block javascripts %}
+        {# Inclure les blocs de scripts ici s'ils sont spécifiques à cette page #}
+        <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('js/wow.min.js') }}"></script>
+        <script src="{{ asset('js/easing.min.js') }}"></script>
+        <script src="{{ asset('js/waypoints.min.js') }}"></script>
+        <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
+        <script src="{{ asset('js/main.js') }}"></script>
+        {{ parent() }}
+   {% endblock %}
+</body>
+</html>
