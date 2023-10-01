@@ -4,19 +4,15 @@ namespace App\Entity;
 
 use App\Entity\Traits\TimeStampable;
 use App\Repository\UserRepository;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Mime\Message;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ["email"], message: "There is already an account with this email")]
-#[UniqueEntity(fields: ["phoneNumber"], message: "There is already an account with this phoneNumber")]
+#[UniqueEntity(fields: ["email"], message: "This email is already registered")]
+#[UniqueEntity(fields: ["phoneNumber"], message: "This phone number is already registered")]
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -24,49 +20,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\NotBlank(message: "Please enter your email address")]
     #[Assert\Email(message: "Please enter a valid email address")]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $password = null;
 
     #[Assert\EqualTo(propertyPath: "password", message: "Password and confirmation password must match")]
-    public $confirm_password;
+    private ?string $confirmPassword = null;
 
-    #[ORM\Column(type: "boolean")]
-    private ?bool $isverified = false;
+    #[ORM\Column(type: 'boolean')]
+    private bool $isVerified = false;
 
-    #[ORM\Column(name: "phoneNumber", type: "string", length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 
-    #[ORM\Column(name: "gender", type: "string", length: 1)]
+    #[ORM\Column(type: 'string', length: 1, nullable: true)]
     private ?string $gender = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $birthplace = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $birthday = null;
 
-    #[ORM\Column(length: 255)]
-    protected ?string $nationality = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $nationality = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $location = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $status = null;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $fullname = null;
 
-    #[ORM\Column(type: "json")]
-    private array $role = [];
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     public function getId(): ?int
     {
@@ -97,14 +93,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsverified(): ?bool
+    public function getConfirmPassword(): ?string
     {
-        return $this->isverified;
+        return $this->confirmPassword;
     }
 
-    public function setIsverified(bool $isverified): self
+    public function setConfirmPassword(?string $confirmPassword): self
     {
-        $this->isverified = $isverified;
+        $this->confirmPassword = $confirmPassword;
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }
@@ -126,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->gender;
     }
 
-    public function setGender(string $gender): self
+    public function setGender(?string $gender): self
     {
         $this->gender = $gender;
 
@@ -138,7 +146,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->birthplace;
     }
 
-    public function setBirthplace(string $birthplace): self
+    public function setBirthplace(?string $birthplace): self
     {
         $this->birthplace = $birthplace;
 
@@ -150,7 +158,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->birthday;
     }
 
-    public function setBirthday(\DateTimeInterface $birthday): self
+    public function setBirthday(?\DateTimeInterface $birthday): self
     {
         $this->birthday = $birthday;
 
@@ -162,7 +170,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nationality;
     }
 
-    public function setNationality(string $nationality): self
+    public function setNationality(?string $nationality): self
     {
         $this->nationality = $nationality;
 
@@ -174,7 +182,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->location;
     }
 
-    public function setLocation(string $location): self
+    public function setLocation(?string $location): self
     {
         $this->location = $location;
 
@@ -186,7 +194,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(?string $status): self
     {
         $this->status = $status;
 
@@ -198,21 +206,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->fullname;
     }
 
-    public function setFullname(string $fullname): self
+    public function setFullname(?string $fullname): self
     {
         $this->fullname = $fullname;
 
         return $this;
     }
 
-    public function getRole(): array
+    public function getRoles(): array
     {
-        return $this->role;
+        return $this->roles;
     }
 
-    public function setRole(array $role): self
+    public function setRoles(array $roles): self
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }
@@ -222,24 +230,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    public function getRoles(): array
-    {
-        return $this->role;
-    }
-
-    public function getSalt(): ?string
-    {
-        return null;
-    }
-
-    public function eraseCredentials()
-    {
-        // Cette méthode est généralement vide
-    }
-
     public function getUsername(): string
     {
         return (string) $this->email;
     }
 
+    public function getSalt(): ?string
+    {
+        // Vous pouvez ignorer cette méthode car bcrypt inclut automatiquement un sel
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        // Cette méthode est généralement vide car il n'est pas nécessaire de faire quoi que ce soit après l'authentification
+    }
 }
