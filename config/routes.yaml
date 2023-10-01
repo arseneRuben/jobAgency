@@ -1,5 +1,13 @@
 # config/routes.yaml
 
-app_job_entry:
+app_home:
     path: /
     controller: App\Controller\JobEntryController::index
+
+app_about:
+    path: /about
+    controller: App\Controller\JobEntryController::about
+
+admin_supplier:
+    path: /supplier
+    controller: App\Controller\SupplierController::index

@@ -13,7 +13,12 @@ class JobEntryController extends AbstractController
     #[Route('/', name: 'app_job_entry')]
     public function index(): Response
     {
-        return $this->render('job_entry/index.html.twig' , ['controller_name' => 'JobEntryController', 
-        ]);
+        return $this->render('job_entry/index.html.twig', []);
+    }
+
+    #[Route('/about', name: 'app_about')]
+    public function about(): Response
+    {
+        return $this->render('about/index.html.twig', []);
     }
 }
