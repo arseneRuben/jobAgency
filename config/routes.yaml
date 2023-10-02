@@ -2,12 +2,32 @@
 
 app_home:
     path: /
-    controller: App\Controller\JobEntryController::index
+    controller: 'App\Controller\JobEntryController::index'
 
 app_about:
     path: /about
-    controller: App\Controller\JobEntryController::about
+    controller: 'App\Controller\JobEntryController::about'
+
+app_contact:
+    path: /contact
+    controller: 'App\Controller\JobEntryController::index'
+
+app_category:
+    path: /category
+    controller: 'App\Controller\JobEntryController::category'
+
+app_testimonials:
+    path: /testimonials
+    controller: 'App\Controller\JobEntryController::testimonials'
+
+app_job-list:
+    path: /job-list
+    controller: 'App\Controller\JobEntryController::jobList'
+
+app_job-detail:
+    path: /job-detail
+    controller: 'App\Controller\JobEntryController::jobDetail'
 
 admin_supplier:
     path: /supplier
-    controller: App\Controller\SupplierController::index
+    controller: 'App\Controller\SupplierController::index'
