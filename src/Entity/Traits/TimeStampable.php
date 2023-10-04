@@ -33,4 +33,15 @@ trait TimeStampable
         $this->updatedAt = $updatedAt;
         return $this;
     }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateTimestamps() 
+    {
+        if($this->createdAt() == null) {
+            $this->setCreatedAt(new \DateTimeImmutable);
+        }
+
+        $this->setUpdatedAt(new \DateTimeImmutable);
+    }
 }
